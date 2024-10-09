@@ -7,6 +7,7 @@ use App\Http\Requests\Api\LoginRequest;
 use App\Models\Admin;
 use App\Traits\ResponseHelper;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
@@ -29,6 +30,12 @@ class LoginController extends Controller
             'token' => $admin->createToken('ADMIN TOKEN')->plainTextToken,
             'admin' => $admin,
         ]);
+    }
 
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return $this->responseSucceed([], 'logout successfully');
     }
 }
