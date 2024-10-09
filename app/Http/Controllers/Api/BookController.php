@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Book\CreateBookRequest;
 use App\Http\Requests\Api\Book\DeleteBookRequest;
 use App\Http\Requests\Api\Book\DetailBookRequest;
+use App\Http\Requests\Api\Book\UpdateBookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Traits\ResponseHelper;
@@ -50,20 +51,15 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(CreateBookRequest $request)
+    public function update(UpdateBookRequest $request)
     {
-        $old_book = Book::find($request->id);
-
-        if (! $old_book) {
-            return $this->responseFailed('Invalid ID', 403);
-        }
-
         $exit = Book::whereName($request->name)->whereAuthor($request->author)->first();
 
         if ($exit) {
             return $this->responseFailed('Book is already exit', 403);
         }
 
+        $old_book = Book::find($request->id);
         $old_book->name = $request->name ?? $old_book->name;
         $old_book->author = $request->author ?? $old_book->author;
         $old_book->total = $request->total ?? $old_book->total;
@@ -79,10 +75,6 @@ class BookController extends Controller
     {
         $book = Book::find($request->id);
 
-        if (! $book) {
-            return $this->responseFailed('Invalid ID', 403);
-        }
-
         $book->delete();
 
         return $this->responseSucceed([], message : 'Successfully Deleted');
@@ -91,10 +83,6 @@ class BookController extends Controller
     public function detail(DetailBookRequest $request)
     {
         $book = Book::find($request->id);
-
-        if (! $book) {
-            return $this->responseFailed('Invalid ID', 403);
-        }
 
         return $this->responseSucceed([
             'book' => new BookResource($book),

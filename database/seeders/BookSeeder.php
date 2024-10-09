@@ -17,11 +17,11 @@ class BookSeeder extends Seeder
         }
 
         $books = [
-            ['name' => 'book1', 'author' => 'author1', 'total' => 20],
-            ['name' => 'book2', 'author' => 'author2', 'total' => 25],
-            ['name' => 'book3', 'author' => 'author3', 'total' => 30],
-            ['name' => 'book5', 'author' => 'author4', 'total' => 35],
-            ['name' => 'book6', 'author' => 'author5', 'total' => 23],
+            ['name' => 'book1', 'author' => 'author1', 'total' => 20, 'left' => 20],
+            ['name' => 'book2', 'author' => 'author2', 'total' => 25, 'left' => 25],
+            ['name' => 'book3', 'author' => 'author3', 'total' => 30, 'left' => 30],
+            ['name' => 'book5', 'author' => 'author4', 'total' => 35, 'left' => 35],
+            ['name' => 'book6', 'author' => 'author5', 'total' => 23, 'left' => 23],
         ];
 
         foreach ($books as $book) {
@@ -30,6 +30,7 @@ class BookSeeder extends Seeder
                 'author' => $book['author'],
             ], [
                 'total' => $book['total'],
+                'left' => $book['left'],
             ]);
         }
     }
