@@ -8,6 +8,7 @@ use App\Http\Requests\Api\Loan\UpdateLoanRequest;
 use App\Http\Resources\LoanResource;
 use App\Models\Book;
 use App\Models\Loan;
+use App\Models\User;
 use App\Traits\ResponseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,9 +56,14 @@ class LoanController extends Controller
     public function create(CreateLoanRequest $request)
     {
         $book = Book::find($request->book_id);
+        $user = User::find($request->user_id);
 
         if ($book->left == 0) {
             return $this->responseFailed('This book is currently unavailable', 403);
+        }
+
+        if ($user->is_freeze) {
+            return $this->responseFailed('This user is currently freezed', 403);
         }
 
         DB::transaction(function () use ($request, $book) {
