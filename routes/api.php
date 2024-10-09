@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
@@ -8,5 +9,17 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    // Auth
     Route::post('logout', [AuthController::class, 'logout']);
+
+    //Book
+    Route::controller(BookController::class)->prefix('/book')->group(function () {
+        Route::post('/', 'index');
+        Route::post('/create', 'create');
+        Route::post('/update', 'update');
+        Route::post('/delete', 'delete');
+        Route::post('/detail', 'detail');
+    });
+
 });
